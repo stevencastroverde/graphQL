@@ -1,5 +1,5 @@
 const graphql = require('graphql');
-const _ = require('lodash');
+const axios = require('axios');
 const {
 	GraphQLObjectType,
 	GraphQLString,
@@ -7,21 +7,31 @@ const {
 	GraphQLSchema
 } = graphql;
 
-//just for dev purposes using hardcoded data
-const users = [
-	{ id: '23', firstName: 'Bill', age: 20},
-	{ id: '47', firstName: 'Sam', age: 21 }
-]
+const CompanyType = new GraphQLObjectType({
+	name: 'Company',
+	fields: {
+		id: {type: GraphQLString},
+		name: {type: GraphQLString},
+		description: {type: GraphQLString}
+	}
+});
 const UserType = new GraphQLObjectType({
 	name: 'User',
 	fields: {
-		id: {type: GraphQLString },
-		firstName: {type: GraphQLString },
-		age: {type: GraphQLInt }
+		id: { type: GraphQLString },
+		firstName: { type: GraphQLString },
+		age: { type: GraphQLInt },
+		company: {
+			type: CompanyType,
+			resolve(parentValue, args){
+				return axios.get(`http://localhost:3000/companies/${parentValue.companyId}`)
+					.then(resp => resp.data);
+			}
+		}
 	}
 });
-
 //gives graphql a way to find a specific item in db
+//entry point
 const RootQuery = new GraphQLObjectType({
 	name: 'RootQueryType',
 	fields: {
@@ -31,7 +41,8 @@ const RootQuery = new GraphQLObjectType({
 			args: { id: { type:GraphQLString } },
 			resolve(parentValue, args) {
 				//where we find the actual data/ go into database
-				return _.find(users, { id: args.id });
+				return axios.get(`http://localhost:3000/users/${args.id}`)
+					.then(resp => resp.data);
 			}
 		}
 	}

@@ -1,0 +1,14 @@
+{
+	"users": [
+		{"id": "23", "firstName": "Bill", "age": 20, "companyId": "1" },
+		{"id": "40", "firstName": "Ted", "age": 75, "companyId": "2"},
+		{"id": "07", "firstName": "Mary", "age": 32, "companyId": "1" },
+		{"id": "21", "firstName": "Chinnu", "age": 33, "companyId": "2" },
+		{"id": "33", "firstName": "Steven", "age": 25, "companyId": "1" },
+		{"id": "55", "firstName": "Erico", "age": 20, "companyId": "2" }
+	],
+	"companies": [
+		{"id": "1", "name": "Apple", "description": "iphone"},
+		{"id": "2", "name": "Google", "description": "search"}
+	]
+}
